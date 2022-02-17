@@ -5,6 +5,7 @@ const SUCCESS_BLOCK = 'sblock';
 const VOID = 'void';
 const PLAYER = 'player';
 const FLOOR = 'floor';
+const POOTIS = 'pootis';
 
 const BOARDXMAX = 10;
 const BOARDYMAX = BOARDXMAX - 1;
@@ -37,7 +38,8 @@ function createBoard(){
 	}
 	movedOverBlock = FLOOR;
 	board[playerX][playerY] = PLAYER;
-	board[3][1] = BLOCK;
+	board[4][4] = BLOCK;
+	board[5][8] = POOTIS;
 	console.log(board);
 	return board;
 }
@@ -70,6 +72,9 @@ function printBoard(bboard){
 			else if(bboard[i][j] == VOID){
 				tileType = VOID;
 			}
+			else if(bboard[i][j] == POOTIS){
+				tileType = POOTIS;
+			}
 			toBeWritten += "<td class='"+ tileType +"'>";
 			toBeWritten += "</td>";
 		}
@@ -83,13 +88,20 @@ function printBoard(bboard){
 
 function move(){
 	
-	if(gameBoard[playerX][playerY] == WALL){
+	if(gameBoard[playerX][playerY] == WALL || gameBoard[playerX][playerY] == EMPTY || gameBoard[playerX][playerY] == VOID){
+		//Can't move into walls!
 		playerY = playerPreviousY;
 		playerX = playerPreviousX;
 		return;
 	}
 	else 
-	gameBoard[playerPreviousX][playerPreviousY] = FLOOR;
+	if(gameBoard[playerX][playerY] == POOTIS){
+		movedOverBlock = POOTIS;
+	}
+	if(gameBoard[playerX][playerY] == FLOOR){
+		movedOverBlock = FLOOR;
+	}
+	gameBoard[playerPreviousX][playerPreviousY] = movedOverBlock;
 	gameBoard[playerX][playerY] = PLAYER;
 	
 }

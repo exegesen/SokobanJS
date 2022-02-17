@@ -23,8 +23,13 @@ body{
 	background:url(Block.png) 0 0;
 	
 }
-
-.cell{
+.pootis{
 	width:30px; height:30px;
+	background:url(pootis.png) 0 0;
+	
+}
+.sblock{
+	width:30px; height:30px;
+	background:url(sblock.png) 0 0;
 	
 }
