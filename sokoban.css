@@ -18,6 +18,11 @@ body{
 	background:url(Player.png) 0 0;
 	
 }
+.block{
+	width:30px; height:30px;
+	background:url(Block.png) 0 0;
+	
+}
 
 .cell{
 	width:30px; height:30px;

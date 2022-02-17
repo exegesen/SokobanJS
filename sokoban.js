@@ -9,19 +9,22 @@ const FLOOR = 'floor';
 const BOARDXMAX = 10;
 const BOARDYMAX = BOARDXMAX - 1;
 
-var playerPreviousX = 0;
-var playerX = 1;
 
-var playerPreviousY = 0;
-var playerY = 1;
+var playerX = 3;
+var playerPreviousX = playerX;
+
+
+var playerY = 3;
+var playerPreviousY = playerY;
 var gameBoard;
+var movedOverBlock = FLOOR;
 
 function createBoard(){
 	var board = new Array(BOARDXMAX);
 	for(var i=0; i<board.length; i++){
 		board[i] = new Array(BOARDYMAX);
 	}
-	board[playerX][playerY] = PLAYER;
+	
 	for(var i=0; i<board.length; i++){
 		for(var j=0; j<board.length; j++){
 			if(i == 0 || i == board.length-1 || j == 0 || j == board.length-1){
@@ -32,6 +35,9 @@ function createBoard(){
 			}
 		}
 	}
+	movedOverBlock = FLOOR;
+	board[playerX][playerY] = PLAYER;
+	board[3][1] = BLOCK;
 	console.log(board);
 	return board;
 }
@@ -74,41 +80,54 @@ function printBoard(bboard){
 	table.innerHTML = toBeWritten;
 }
 
+
 function move(){
 	
+	if(gameBoard[playerX][playerY] == WALL){
+		playerY = playerPreviousY;
+		playerX = playerPreviousX;
+		return;
+	}
+	else 
+	gameBoard[playerPreviousX][playerPreviousY] = FLOOR;
+	gameBoard[playerX][playerY] = PLAYER;
 	
 }
 
 window.onload =  function main() {
 	gameBoard = createBoard();
 	printBoard(gameBoard);
+	document.getElementById('test0').innerHTML = 'playerX = ' + playerX;
+	document.getElementById('test1').innerHTML = 'playerY = ' + playerY;
+	document.getElementById('test2').innerHTML = 'playerPreviousX = ' + playerPreviousX;
+	document.getElementById('test3').innerHTML = 'playerPreviousY = ' + playerPreviousY;
 	document.addEventListener('keyup', (e) => {
 		if (e.code === "ArrowRight") {
-			if(playerY >= BOARDYMAX){ return;}
-			else 
 			playerPreviousY = playerY;
+			playerPreviousX = playerX;
 			playerY += 1;
 		}
-		else if (e.code === "ArrowUp") {
-			if(playerY < 1){ return;}
+		else if (e.code === "ArrowLeft") {
 			playerPreviousY = playerY;
+			playerPreviousX = playerX;
 			playerY -= 1;
 		}
-		else if (e.code === "ArrowDown") { 
-			if(playerX >= BOARDXMAX) {return;}
-			else 
-			playerPreviousX = playerX;		
+		else if (e.code === "ArrowDown") { 	
+			playerPreviousX = playerX;
+			playerPreviousY = playerY;
 			playerX += 1;
 		}
-		else if (e.code === "ArrowLeft") { 
-			if(playerX < 1) {return;}
-			else 
-			playerPreviousX = playerX;		
+		else if (e.code === "ArrowUp") { 
+			playerPreviousX = playerX;
+			playerPreviousY = playerY;
 			playerX -= 1;
 		}
-		move();
+		
 		document.getElementById('test0').innerHTML = 'playerX = ' + playerX;
 		document.getElementById('test1').innerHTML = 'playerY = ' + playerY;
+		document.getElementById('test2').innerHTML = 'playerPreviousX = ' + playerPreviousX;
+		document.getElementById('test3').innerHTML = 'playerPreviousY = ' + playerPreviousY;
+		move();
 		printBoard(gameBoard);
 	});
 	
