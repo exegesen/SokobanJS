@@ -1,0 +1,25 @@
+body{
+	background:white;
+	
+}
+
+.floor{
+	background: url(Floor.png) 0 0;
+	width:30px; height:30px;
+	
+}
+.wall{
+	background:url(Redbrick.png) 0 0;
+	width:30px; height:30px;
+	
+}
+.player{
+	width:30px; height:30px;
+	background:url(Player.png) 0 0;
+	
+}
+
+.cell{
+	width:30px; height:30px;
+	
+}
