@@ -113,6 +113,15 @@ function move(){
 	
 }
 
+function checkWinCondition(){
+	if(gameBoard[5][8] == BLOCK){
+		document.getElementById('test4').innerHTML = 'Game WON!';
+		gameBoard[5][8] = SUCCESS_BLOCK;
+	}
+	
+	
+}
+
 window.onload =  function main() {
 	gameBoard = createBoard();
 	printBoard(gameBoard);
@@ -147,6 +156,7 @@ window.onload =  function main() {
 		document.getElementById('test2').innerHTML = 'playerPreviousX = ' + playerPreviousX;
 		document.getElementById('test3').innerHTML = 'playerPreviousY = ' + playerPreviousY;
 		move();
+		checkWinCondition()
 		printBoard(gameBoard);
 	});
 	
