@@ -98,8 +98,15 @@ function move(){
 	if(gameBoard[playerX][playerY] == POOTIS){
 		movedOverBlock = POOTIS;
 	}
-	if(gameBoard[playerX][playerY] == FLOOR){
+	else if(gameBoard[playerX][playerY] == FLOOR){
 		movedOverBlock = FLOOR;
+	}
+	else if(gameBoard[playerX][playerY] == BLOCK){
+		movedOverBlock = FLOOR;
+		var dx = playerX-playerPreviousX;
+		var dy = playerY-playerPreviousY;
+		gameBoard[playerX+dx][playerY+dy] = BLOCK;
+		
 	}
 	gameBoard[playerPreviousX][playerPreviousY] = movedOverBlock;
 	gameBoard[playerX][playerY] = PLAYER;
