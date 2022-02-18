@@ -19,15 +19,9 @@ function createBoard(){
 }
 
 function printBoard(bboard){
-	
 	var table = document.getElementById("table");
 	var toBeWritten = '';
 	var tileType;
-	
-	const WALL = 'W';
-	
-	
-	
 	for(var i=0; i<BOARDYMAX; i++){
 		toBeWritten += "<tr>";
 		for(var j=0; j<BOARDXMAX; j++){
@@ -46,13 +40,13 @@ function printBoard(bboard){
 			}
 			else if(bboard[i][j] == "B"){
 				tileType = Entities.Block;
+				var isGoalPost = tileMapNoEntities.mapGrid[i][j] == "G";
+				if(isGoalPost){
+					tileType = Entities.BlockDone;
+					
+				}
+				console.log(tileType);
 			}
-			/*
-			else if(bboard[i][j] == Entities.BlockDone){
-				tileType = Entities.BlockDone;
-			}*/
-			
-			
 			toBeWritten += "<td class='"+ tileType +"'>";
 			toBeWritten += "</td>";
 		}
@@ -100,10 +94,10 @@ function move(){
 		var c = gameBoard[playerX-dx][playerY-dy];
 		
 		var bool1 = (c != ' ');
-		console.log(bool1);
+		
 		var bool2 = (c != 'G');
-		console.log(bool2);
-		console.log(c);		
+		
+				
 		if( !(bool1 || bool2)) {
 			//Can't pull boxes or push 2 boxes at same time
 			playerY = playerPreviousY;
@@ -112,9 +106,13 @@ function move(){
 		} 
 		else{
 			gameBoard[playerX][playerY] = 'P';
-			document.getElementById('test7').innerHTML = "Intended Box Position: x: " + playerX-dx + "y: " + playerY-dy;
+			//document.getElementById('test7').innerHTML = "Intended Box Position: x: " + playerX-dx + "y: " + playerY-dy;
 			gameBoard[playerX-dx][playerY-dy] = 'B';
-			gameBoard[playerPreviousX][playerPreviousY] = tileJustWasAt;
+			
+			gameBoard[playerPreviousX][playerPreviousY] = tileMapNoEntities.mapGrid[playerPreviousX][playerPreviousY];
+			
+			
+			
 			dy = 0; dx = 0;
 			return;
 		}
@@ -123,13 +121,11 @@ function move(){
 		
 	}
 	
-	
 	gameBoard[playerX][playerY] = "P"; // tile moving to set player texture
-	//After this point the player has moved. We know the tile just moved to texture
-	//and the 
-	gameBoard[playerPreviousX][playerPreviousY] = tileJustWasAt;//
+	gameBoard[playerPreviousX][playerPreviousY] = tileMapNoEntities.mapGrid[playerPreviousX][playerPreviousY];
 	
 	//debug statements
+	/*
 	floorUp = gameBoard[playerX-1][playerY];
 	floorDown = gameBoard[playerX+1][playerY];
 	floorLeft = gameBoard[playerX][playerY-1];
@@ -138,7 +134,7 @@ function move(){
 	document.getElementById('test8').innerHTML = "floorDown " + floorDown;
 	document.getElementById('test9').innerHTML = "floorLeft " + floorLeft;
 	document.getElementById('test10').innerHTML = "floorRight " + floorRight;
-	
+	*/
 	
 	
 }
@@ -152,10 +148,20 @@ function checkWinCondition(){
 	*/
 	
 }
-
+function isBoxSbox(){
+	
+	for(var i=0; i<BOARDYMAX; i++){
+		for(var j=0; j<BOARDXMAX; j++){
+			
+		}
+	
+	}
+	
+}
 window.onload =  function main() {
 	gameBoard = createBoard();
 	printBoard(gameBoard);
+	/*
 	document.getElementById('test0').innerHTML = 'playerX = ' + playerX;
 	document.getElementById('test1').innerHTML = 'playerY = ' + playerY;
 	document.getElementById('test2').innerHTML = 'playerPreviousX = ' + playerPreviousX;
@@ -165,7 +171,7 @@ window.onload =  function main() {
 	document.getElementById('test8').innerHTML = "floorDown " + floorDown;
 	document.getElementById('test9').innerHTML = "floorLeft " + floorLeft;
 	document.getElementById('test10').innerHTML = "floorRight " + floorRight;
-	
+	*/	
 	document.addEventListener('keyup', (e) => {
 		if (e.code === "ArrowRight") {
 			playerPreviousY = playerY;
@@ -187,11 +193,12 @@ window.onload =  function main() {
 			playerPreviousY = playerY;
 			playerX -= 1;
 		}
-		
+		/*
 		document.getElementById('test0').innerHTML = 'playerX = ' + playerX;
 		document.getElementById('test1').innerHTML = 'playerY = ' + playerY;
 		document.getElementById('test2').innerHTML = 'playerPreviousX = ' + playerPreviousX;
 		document.getElementById('test3').innerHTML = 'playerPreviousY = ' + playerPreviousY;
+		*/
 		move();
 		checkWinCondition()
 		printBoard(gameBoard);
@@ -199,6 +206,349 @@ window.onload =  function main() {
 	
 	
 }
+
+var tileMapNoEntities = {
+  width: 19,
+  height: 16,
+  mapGrid: [
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      [" "],
+      [" "],
+      ["W"],
+      ["W"],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      [" "],
+      [" "],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      ["W"],
+      ["W"],
+      ["W"],
+      [" "],
+      ["W"],
+      [" "],
+      ["W"],
+      ["W"],
+      [" "],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+    ],
+    [
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      [" "],
+      ["W"],
+      ["W"],
+      [" "],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      [" "],
+      [" "],
+      ["G"],
+      ["G"],
+      ["W"],
+    ],
+    [
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      ["G"],
+      ["G"],
+      ["W"],
+    ],
+    [
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      [" "],
+      ["W"],
+      ["W"],
+      ["W"],
+      [" "],
+      ["W"],
+      [" "],
+      ["W"],
+      ["W"],
+      [" "],
+      [" "],
+      ["G"],
+      ["G"],
+      ["W"],
+    ],
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+    ],
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      ["W"],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+    [
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+      [" "],
+    ],
+  ],
+};
 
 
 
