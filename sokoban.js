@@ -1,80 +1,58 @@
-const EMPTY = 'empty';
-const WALL = 'wall';
-const BLOCK = 'block';
-const SUCCESS_BLOCK = 'sblock';
-const VOID = 'void';
-const PLAYER = 'player';
-const FLOOR = 'floor';
-const POOTIS = 'pootis';
 
-const BOARDXMAX = 10;
-const BOARDYMAX = BOARDXMAX - 1;
+const BOARDXMAX = 19;
+const BOARDYMAX = 16;
 
+var floorUnderCharacter = '';
+var playerX = 11;
+var playerPreviousX = 0;
 
-var playerX = 3;
-var playerPreviousX = playerX;
+var playerY = 11;
+var playerPreviousY = 0;
 
-
-var playerY = 3;
-var playerPreviousY = playerY;
 var gameBoard;
-var movedOverBlock = FLOOR;
+var movedOverBlock = " ";
 
 function createBoard(){
-	var board = new Array(BOARDXMAX);
-	for(var i=0; i<board.length; i++){
-		board[i] = new Array(BOARDYMAX);
-	}
+	console.log(tileMap01.mapGrid);
+	return tileMap01.mapGrid;
 	
-	for(var i=0; i<board.length; i++){
-		for(var j=0; j<board.length; j++){
-			if(i == 0 || i == board.length-1 || j == 0 || j == board.length-1){
-				board[i][j] = WALL;
-			}
-			else{
-				board[i][j] = FLOOR;
-			}
-		}
-	}
-	movedOverBlock = FLOOR;
-	board[playerX][playerY] = PLAYER;
-	board[4][4] = BLOCK;
-	board[5][8] = POOTIS;
-	console.log(board);
-	return board;
 }
 
 function printBoard(bboard){
+	console.log(bboard);
 	var table = document.getElementById("table");
 	var toBeWritten = '';
 	var tileType;
-	for(var i=0; i<bboard.length; i++){
+	
+	const WALL = 'W';
+	
+	
+	
+	for(var i=0; i<BOARDYMAX; i++){
 		toBeWritten += "<tr>";
-		for(var j=0; j<bboard.length; j++){
-			if(bboard[i][j] == PLAYER){
-				tileType = PLAYER;
+		for(var j=0; j<BOARDXMAX; j++){
+			
+			if(bboard[i][j] == "W"){
+				tileType = Tiles.Wall;
 			}
-			else if(bboard[i][j]== WALL){
-				tileType = WALL;
-			} 
-			else if(bboard[i][j] == FLOOR){
-				tileType = FLOOR;
+			else if(bboard[i][j] == ' '){
+				tileType = Tiles.Space;
 			}
-			else if(bboard[i][j] == BLOCK){
-				tileType = BLOCK;
+			else if(bboard[i][j] == "G"){
+				tileType = Tiles.Goal;
 			}
-			else if(bboard[i][j] == SUCCESS_BLOCK){
-				tileType = SUCCESS_BLOCK;
+			else if(bboard[i][j] == "P"){
+				tileType = Entities.Character;
 			}
-			else if(bboard[i][j] == EMPTY){
-				tileType = EMPTY;
+			else if(bboard[i][j] == "B"){
+				tileType = Entities.Block;
 			}
-			else if(bboard[i][j] == VOID){
-				tileType = VOID;
-			}
-			else if(bboard[i][j] == POOTIS){
-				tileType = POOTIS;
-			}
+			/*
+			else if(bboard[i][j] == Entities.BlockDone){
+				tileType = Entities.BlockDone;
+			}*/
+			
+			
 			toBeWritten += "<td class='"+ tileType +"'>";
 			toBeWritten += "</td>";
 		}
@@ -85,50 +63,78 @@ function printBoard(bboard){
 	table.innerHTML = toBeWritten;
 }
 
-
+var floorUp = '';
+var floorDown = '';
+var floorLeft = '';
+var floorRight = '';
+var floorPreviouslyAt = '';
 function move(){
+	floorUp = gameBoard[playerX-1][playerY];
+	floorDown = gameBoard[playerX+1][playerY];
+	floorLeft = gameBoard[playerX][playerY-1];
+	floorRight = gameBoard[playerX][playerY+1];
 	
-	if(gameBoard[playerX][playerY] == WALL || gameBoard[playerX][playerY] == EMPTY || gameBoard[playerX][playerY] == VOID){
+	document.getElementById('test7').innerHTML = "floorUp " + floorUp;
+	document.getElementById('test8').innerHTML = "floorDown " + floorDown;
+	document.getElementById('test9').innerHTML = "floorLeft " + floorLeft;
+	document.getElementById('test10').innerHTML = "floorRight " + floorRight;
+	
+	if(gameBoard[playerX][playerY] == "W"){
 		//Can't move into walls!
 		playerY = playerPreviousY;
 		playerX = playerPreviousX;
 		return;
 	}
-	else 
-	if(gameBoard[playerX][playerY] == POOTIS){
-		movedOverBlock = POOTIS;
+	else if(gameBoard[playerX][playerY] == "G"){
+		//Moved over goalpost
+		movedOverBlock = "G";
 	}
-	else if(gameBoard[playerX][playerY] == FLOOR){
-		movedOverBlock = FLOOR;
+	else if(gameBoard[playerX][playerY] == " "){
+		//Moved over space/floor
+		movedOverBlock = " ";
 	}
-	else if(gameBoard[playerX][playerY] == BLOCK){
-		movedOverBlock = FLOOR;
-		var dx = playerX-playerPreviousX;
-		var dy = playerY-playerPreviousY;
-		gameBoard[playerX+dx][playerY+dy] = BLOCK;
+	else if(gameBoard[playerX][playerY] == "B"){
 		
 	}
-	gameBoard[playerPreviousX][playerPreviousY] = movedOverBlock;
-	gameBoard[playerX][playerY] = PLAYER;
+	
+	gameBoard[playerPreviousX][playerPreviousY] = floorPreviouslyAt;
+	document.getElementById('test5').innerHTML = "movedOverBlock: " + movedOverBlock;
+	
+	floorPreviouslyAt = gameBoard[playerPreviousX][playerPreviousY]
+	document.getElementById('test6').innerHTML = "floorPreviouslyAt: " + floorPreviouslyAt;
+	
+	
+	floorUnderCharacter = gameBoard[playerX][playerY];
+	document.getElementById('test4').innerHTML = "floorUnderCharacter: " + floorUnderCharacter;
+	
+	gameBoard[playerX][playerY] = "P";
 	
 }
 
 function checkWinCondition(){
+	/*
 	if(gameBoard[5][8] == BLOCK){
 		document.getElementById('test4').innerHTML = 'Game WON!';
 		gameBoard[5][8] = SUCCESS_BLOCK;
 	}
-	
+	*/
 	
 }
 
 window.onload =  function main() {
 	gameBoard = createBoard();
+	console.log(gameBoard);
 	printBoard(gameBoard);
 	document.getElementById('test0').innerHTML = 'playerX = ' + playerX;
 	document.getElementById('test1').innerHTML = 'playerY = ' + playerY;
 	document.getElementById('test2').innerHTML = 'playerPreviousX = ' + playerPreviousX;
 	document.getElementById('test3').innerHTML = 'playerPreviousY = ' + playerPreviousY;
+	
+	document.getElementById('test7').innerHTML = "floorUp " + floorUp;
+	document.getElementById('test8').innerHTML = "floorDown " + floorDown;
+	document.getElementById('test9').innerHTML = "floorLeft " + floorLeft;
+	document.getElementById('test10').innerHTML = "floorRight " + floorRight;
+	
 	document.addEventListener('keyup', (e) => {
 		if (e.code === "ArrowRight") {
 			playerPreviousY = playerY;

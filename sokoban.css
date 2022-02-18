@@ -3,32 +3,32 @@ body{
 	
 }
 
-.floor{
-	background: url(Floor.png) 0 0;
-	width:30px; height:30px;
-	
-}
-.wall{
+.tile-wall{
 	background:url(Redbrick.png) 0 0;
 	width:30px; height:30px;
 	
 }
-.player{
+.tile-space{
+	background: url(Floor.png) 0 0;
+	width:30px; height:30px;
+	
+}
+.entity-player{
 	width:30px; height:30px;
 	background:url(Player.png) 0 0;
 	
 }
-.block{
+.entity-block{
 	width:30px; height:30px;
 	background:url(Block.png) 0 0;
 	
 }
-.pootis{
+.tile-goal{
 	width:30px; height:30px;
 	background:url(pootis.png) 0 0;
 	
 }
-.sblock{
+.entity-block-goal{
 	width:30px; height:30px;
 	background:url(sblock.png) 0 0;
 	
