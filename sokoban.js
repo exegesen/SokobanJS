@@ -67,35 +67,42 @@ var floorUp = '';
 var floorDown = '';
 var floorLeft = '';
 var floorRight = '';
-var tileJustWasAt = " ";
-var tileJustMovedTo = " ";
+var tileJustWasAt = ' ';
+var tileJustMovedTo = ' ';
 function move(){
 	
 	tileJustWasAt = tileJustMovedTo;
-	if(gameBoard[playerX][playerY] == "W"){
+	if(gameBoard[playerX][playerY] == 'W'){
 		//Can't move into walls!
 		playerY = playerPreviousY;
 		playerX = playerPreviousX;
 		return;
 	}
-	else if(gameBoard[playerX][playerY] == "G"){
+	else if(gameBoard[playerX][playerY] == 'G'){
 		//Moved over goalpost
 		tileJustMovedTo = "G";
 	}
-	else if(gameBoard[playerX][playerY] == " "){
+	else if(gameBoard[playerX][playerY] == ' '){
 		//Moved over space/floor
 		tileJustMovedTo = " ";
 	}
-	else if(gameBoard[playerX][playerY] == "B"){
+	else if(gameBoard[playerX][playerY] == 'B'){
 		//move box
 		dy = playerPreviousY - playerY;
 		dx = playerPreviousX - playerX;
-		if(gameBoard[playerX+dx][playerY+dy] != " "){
-			//Can't push box into wall, or 2 boxes at the same time!
+		/*if(gameBoard[playerX+2*dx][playerY+2*dy] != ' '){*/
+		if((gameBoard[playerX-dx][playerY-dy] != ' ')){
+			//Can't pull boxes or push 2 boxes at same time
+			playerY = playerPreviousY;
+			playerX = playerPreviousX;
 			return;
 		} else{
-			gameBoard[playerX+dx][playerY+dy] = "B";
-			
+			gameBoard[playerX][playerY] = 'P';
+			document.getElementById('test7').innerHTML = "Intended Box Position: x: " + playerX-dx + "y: " + playerY-dy;
+			gameBoard[playerX-dx][playerY-dy] = 'B';
+			gameBoard[playerPreviousX][playerPreviousY] = tileJustWasAt;
+			dy = 0; dx = 0;
+			return;
 		}
 	}
 	
