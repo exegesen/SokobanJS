@@ -13,13 +13,13 @@ var gameBoard;
 var movedOverBlock = " ";
 
 function createBoard(){
-	console.log(tileMap01.mapGrid);
+	
 	return tileMap01.mapGrid;
 	
 }
 
 function printBoard(bboard){
-	console.log(bboard);
+	
 	var table = document.getElementById("table");
 	var toBeWritten = '';
 	var tileType;
@@ -63,6 +63,12 @@ function printBoard(bboard){
 	table.innerHTML = toBeWritten;
 }
 
+function NAND(a, b) {
+  return !(a && b)
+}
+
+
+
 var floorUp = '';
 var floorDown = '';
 var floorLeft = '';
@@ -72,7 +78,7 @@ var tileJustMovedTo = ' ';
 function move(){
 	
 	tileJustWasAt = tileJustMovedTo;
-	if(gameBoard[playerX][playerY] == 'W'){
+	if(gameBoard[playerX][playerY] == "W"){
 		//Can't move into walls!
 		playerY = playerPreviousY;
 		playerX = playerPreviousX;
@@ -87,16 +93,24 @@ function move(){
 		tileJustMovedTo = " ";
 	}
 	else if(gameBoard[playerX][playerY] == 'B'){
-		//move box
+		//move box part
 		dy = playerPreviousY - playerY;
 		dx = playerPreviousX - playerX;
 		/*if(gameBoard[playerX+2*dx][playerY+2*dy] != ' '){*/
-		if((gameBoard[playerX-dx][playerY-dy] != ' ')){
+		var c = gameBoard[playerX-dx][playerY-dy];
+		
+		var bool1 = (c != ' ');
+		console.log(bool1);
+		var bool2 = (c != 'G');
+		console.log(bool2);
+		console.log(c);		
+		if( !(bool1 || bool2)) {
 			//Can't pull boxes or push 2 boxes at same time
 			playerY = playerPreviousY;
 			playerX = playerPreviousX;
 			return;
-		} else{
+		} 
+		else{
 			gameBoard[playerX][playerY] = 'P';
 			document.getElementById('test7').innerHTML = "Intended Box Position: x: " + playerX-dx + "y: " + playerY-dy;
 			gameBoard[playerX-dx][playerY-dy] = 'B';
@@ -104,6 +118,9 @@ function move(){
 			dy = 0; dx = 0;
 			return;
 		}
+		
+		
+		
 	}
 	
 	
@@ -138,7 +155,6 @@ function checkWinCondition(){
 
 window.onload =  function main() {
 	gameBoard = createBoard();
-	console.log(gameBoard);
 	printBoard(gameBoard);
 	document.getElementById('test0').innerHTML = 'playerX = ' + playerX;
 	document.getElementById('test1').innerHTML = 'playerY = ' + playerY;
