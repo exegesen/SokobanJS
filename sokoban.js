@@ -67,18 +67,11 @@ var floorUp = '';
 var floorDown = '';
 var floorLeft = '';
 var floorRight = '';
-var floorPreviouslyAt = '';
+var tileJustWasAt = " ";
+var tileJustMovedTo = " ";
 function move(){
-	floorUp = gameBoard[playerX-1][playerY];
-	floorDown = gameBoard[playerX+1][playerY];
-	floorLeft = gameBoard[playerX][playerY-1];
-	floorRight = gameBoard[playerX][playerY+1];
 	
-	document.getElementById('test7').innerHTML = "floorUp " + floorUp;
-	document.getElementById('test8').innerHTML = "floorDown " + floorDown;
-	document.getElementById('test9').innerHTML = "floorLeft " + floorLeft;
-	document.getElementById('test10').innerHTML = "floorRight " + floorRight;
-	
+	tileJustWasAt = tileJustMovedTo;
 	if(gameBoard[playerX][playerY] == "W"){
 		//Can't move into walls!
 		playerY = playerPreviousY;
@@ -87,27 +80,42 @@ function move(){
 	}
 	else if(gameBoard[playerX][playerY] == "G"){
 		//Moved over goalpost
-		movedOverBlock = "G";
+		tileJustMovedTo = "G";
 	}
 	else if(gameBoard[playerX][playerY] == " "){
 		//Moved over space/floor
-		movedOverBlock = " ";
+		tileJustMovedTo = " ";
 	}
 	else if(gameBoard[playerX][playerY] == "B"){
-		
+		//move box
+		dy = playerPreviousY - playerY;
+		dx = playerPreviousX - playerX;
+		if(gameBoard[playerX+dx][playerY+dy] != " "){
+			//Can't push box into wall, or 2 boxes at the same time!
+			return;
+		} else{
+			gameBoard[playerX+dx][playerY+dy] = "B";
+			
+		}
 	}
 	
-	gameBoard[playerPreviousX][playerPreviousY] = floorPreviouslyAt;
-	document.getElementById('test5').innerHTML = "movedOverBlock: " + movedOverBlock;
 	
-	floorPreviouslyAt = gameBoard[playerPreviousX][playerPreviousY]
-	document.getElementById('test6').innerHTML = "floorPreviouslyAt: " + floorPreviouslyAt;
+	gameBoard[playerX][playerY] = "P"; // tile moving to set player texture
+	//After this point the player has moved. We know the tile just moved to texture
+	//and the 
+	gameBoard[playerPreviousX][playerPreviousY] = tileJustWasAt;//
+	
+	//debug statements
+	floorUp = gameBoard[playerX-1][playerY];
+	floorDown = gameBoard[playerX+1][playerY];
+	floorLeft = gameBoard[playerX][playerY-1];
+	floorRight = gameBoard[playerX][playerY+1];
+	document.getElementById('test7').innerHTML = "floorUp " + floorUp;
+	document.getElementById('test8').innerHTML = "floorDown " + floorDown;
+	document.getElementById('test9').innerHTML = "floorLeft " + floorLeft;
+	document.getElementById('test10').innerHTML = "floorRight " + floorRight;
 	
 	
-	floorUnderCharacter = gameBoard[playerX][playerY];
-	document.getElementById('test4').innerHTML = "floorUnderCharacter: " + floorUnderCharacter;
-	
-	gameBoard[playerX][playerY] = "P";
 	
 }
 
