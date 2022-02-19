@@ -98,15 +98,16 @@ function move(){
 		var bool2 = (c != 'G');
 		
 				
-		if( !(bool1 || bool2)) {
+		if( (bool1 && bool2)) {
 			//Can't pull boxes or push 2 boxes at same time
+			document.getElementById('test7').innerHTML = "Entered here!";
+			
 			playerY = playerPreviousY;
 			playerX = playerPreviousX;
 			return;
 		} 
 		else{
 			gameBoard[playerX][playerY] = 'P';
-			//document.getElementById('test7').innerHTML = "Intended Box Position: x: " + playerX-dx + "y: " + playerY-dy;
 			gameBoard[playerX-dx][playerY-dy] = 'B';
 			
 			gameBoard[playerPreviousX][playerPreviousY] = tileMapNoEntities.mapGrid[playerPreviousX][playerPreviousY];
